@@ -7,7 +7,7 @@ export class MenuDataService {
 		page.on(this.params.listenEvent, date => {
 			if (!date) date = new Date();
 			this.date = date;
-			let url = `http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=${this.formatDate(date)}&sportId=1`;
+			let url = `//statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=${this.formatDate(date)}&sportId=1`;
 			fetch(url).then(r => r.json()).then(data => {
 				page.trigger(this.params.publishEvent, this.parseData(data));
 			});
