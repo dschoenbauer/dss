@@ -23,7 +23,7 @@ export class MenuView {
 			new Animation(100),
 			new AddBackground(url, "registerDependency"),
 			new AddTitle("setTitle", "refresh", 10, 10),
-			new AddText("refresh","🡑 previous day, 🡓 next day, 🡐 previous, 🡒 next"),
+			new AddText("refresh","\u2191 previous day, \u2193 next day, \u2190 previous, \u2192 next"),
 			new MenuItems(this.params.dataEvent, "nextItem", "previousItem","renderTitle", "setTitle"),
 		]));
 		page.accept(new KeyCommands({
