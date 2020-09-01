@@ -11,7 +11,7 @@ export class MenuItems {
 		this.entity = entity;
 		entity.page.on(this.params.nextItemEvent, () => {
 			let max = Math.max(...this.visibleItems) + 1;
-			if (max > this.visibleItems.length + 1) {
+			if (max > this.items.length - 1) {
 				if (this.visibleItems[this.selectedItem + 1] === null) return;
 				max = null;
 			}
