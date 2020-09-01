@@ -7,6 +7,8 @@ import { DependencyManager } from "../Components/Canvas/DependencyManager.js";
 import { MenuItems } from "../Components/Canvas/MenuItems.js";
 import { KeyCommands } from "../Components/KeyCommands.js";
 import { StateManager } from "../Components/StateManager.js";
+import { AddTitle } from "../Components/Canvas/AddTitle.js";
+import { AddText } from "../Components/Canvas/AddText.js";
 
 export class MenuView {
 	constructor(dataEvent, dataTrigger) {
@@ -17,10 +19,12 @@ export class MenuView {
 		page.accept(new DefaultPageLayout(page.params.app.config.rootElement));
 		page.accept(new Canvas(DefaultPageLayoutTargets.body, [
 			new DependencyManager("registerDependency", "initialDraw"),
-			new FullSize(),
+			new FullSize(),	
 			new Animation(100),
 			new AddBackground(url, "registerDependency"),
-			new MenuItems(this.params.dataEvent, "nextItem", "previousItem")
+			new AddTitle("setTitle", "refresh", 10, 10),
+			new AddText("refresh","🡑 previous day, 🡓 next day, 🡐 previous, 🡒 next"),
+			new MenuItems(this.params.dataEvent, "nextItem", "previousItem","renderTitle", "setTitle"),
 		]));
 		page.accept(new KeyCommands({
 			"ArrowUp": "previousDay",
@@ -28,6 +32,12 @@ export class MenuView {
 			"ArrowLeft": "previousItem",
 			"ArrowRight": "nextItem",
 		}));
-		page.accept(new StateManager("render", "previousDay", "nextDay", this.params.dataTrigger))
+		page.accept(new StateManager(
+			"render",
+			"previousDay",
+			"nextDay",
+			this.params.dataTrigger,
+			"setTitle"
+		))
 	}
 }

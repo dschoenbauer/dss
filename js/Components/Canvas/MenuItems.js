@@ -1,14 +1,14 @@
 import { MenuItem } from "../Entity/MenuItem.js";
 
 export class MenuItems {
-	constructor(dataService, nextItemEvent, previousEvent) {
-		this.params = { dataService, nextItemEvent, previousEvent }
+	constructor(dataService, nextItemEvent, previousEvent, renderTitleEvent, setTitleEvent) {
+		this.params = { dataService, nextItemEvent, previousEvent, renderTitleEvent, setTitleEvent, title: "" }
 		this.initialVisibleItems = [null, null, 0, 1, 2];
 		this.selectedItem = 2;
 	}
 
 	visitCanvas(entity) {
-
+		this.entity = entity;
 		entity.page.on(this.params.nextItemEvent, () => {
 			let max = Math.max(...this.visibleItems) + 1;
 			if (max > this.visibleItems.length + 1) {
@@ -39,11 +39,13 @@ export class MenuItems {
 			})
 		})
 
-		entity.page.on(this.params.dataService, items => {
+		entity.page.on(this.params.dataService, ({title, results:items }) => {
 			promise.then(() => {
 				this.dom = entity.canvas.dom;
 				this.canvas = entity.canvas;
+				
 				this.collectItems(items, entity);
+				entity.page.trigger(this.params.setTitleEvent, title);
 				entity.trigger("refresh");
 			})
 		});
@@ -66,12 +68,13 @@ export class MenuItems {
 		let pos = 0;
 		this.visibleItems.forEach(visibleIdx => {
 			let item = this.items[visibleIdx];
-			if (visibleIdx !== null) {
+			if (visibleIdx !== null & !!item) {
 				let { x, y, h, w } = this.getPostition(pos, item, this.dom);
 				item.render(x, y, h, w, pos, this.selectedItem);
 			}
 			pos++;
 		});
+		this.entity.trigger(this.params.renderTitleEvent);
 	}
 
 	getPostition(position, item, dom) {
