@@ -6,6 +6,7 @@ export class MenuDataService {
 	visitPage(page) {
 		page.on(this.params.listenEvent, date => {
 			if (!date) date = new Date();
+			this.date = date;
 			let url = `http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=${this.formatDate(date)}&sportId=1`;
 			fetch(url).then(r => r.json()).then(data => {
 				page.trigger(this.params.publishEvent, this.parseData(data));
@@ -21,10 +22,17 @@ export class MenuDataService {
 				let { headline, blurb, image: { cuts: [{ src, width, height }] } } = game.content.editorial.recap.mlb;
 				results.push({ headline, blurb, src, width, height });
 			} catch (error) {
-				console.error(error);
+				//console.error(error);
 			}
 		});
-		return results;
+		let title = this.getTitle(results);
+		return { title, results };
+	}
+
+
+	getTitle(results) {
+		let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		return `${new Intl.DateTimeFormat('en-US', options).format(this.date)} - ${results.length} stories`;
 	}
 
 	formatDate(date) {
