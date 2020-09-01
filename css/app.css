@@ -1,10 +1,14 @@
 body {
 	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
 }
 
 #app {
-	width: 100vw;
-	height: 100vh;
+	width: calc(100vw - 3px);
+	height: calc(100vh - 4px);
 }
 
 .canvas {
