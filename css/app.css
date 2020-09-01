@@ -7,8 +7,11 @@ body {
 }
 
 #app {
-	width: calc(100vw - 3px);
-	height: calc(100vh - 4px);
+	width: calc(100vw - 8px);
+	height: calc(100vh - 8px);
+	align-content: center;
+	justify-content: center;
+	display: flex;
 }
 
 .canvas {
