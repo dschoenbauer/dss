@@ -6,10 +6,11 @@ import { AddBackground } from "../Components/Canvas/AddBackground.js";
 import { DependencyManager } from "../Components/Canvas/DependencyManager.js";
 import { MenuItems } from "../Components/Canvas/MenuItems.js";
 import { KeyCommands } from "../Components/KeyCommands.js";
+import { StateManager } from "../Components/StateManager.js";
 
 export class MenuView {
-	constructor(dataEvent) {
-		this.params = { dataEvent }
+	constructor(dataEvent, dataTrigger) {
+		this.params = { dataEvent, dataTrigger }
 	}
 	visitPage(page) {
 		const url = "http://mlb.mlb.com/mlb/images/devices/ballpark/1920x1080/1.jpg";
@@ -27,5 +28,6 @@ export class MenuView {
 			"ArrowLeft": "previousItem",
 			"ArrowRight": "nextItem",
 		}));
+		page.accept(new StateManager("render", "previousDay", "nextDay", this.params.dataTrigger))
 	}
 }

@@ -3,16 +3,11 @@ import { MenuItem } from "../Entity/MenuItem.js";
 export class MenuItems {
 	constructor(dataService, nextItemEvent, previousEvent) {
 		this.params = { dataService, nextItemEvent, previousEvent }
-		this.visibleItems = [null, null, 0, 1, 2];
+		this.initialVisibleItems = [null, null, 0, 1, 2];
 		this.selectedItem = 2;
 	}
 
 	visitCanvas(entity) {
-		let promise = new Promise(resolve => {
-			entity.on("initialDraw", () => {
-				resolve();
-			})
-		})
 
 		entity.page.on(this.params.nextItemEvent, () => {
 			let max = Math.max(...this.visibleItems) + 1;
@@ -38,12 +33,18 @@ export class MenuItems {
 			entity.trigger("refresh");
 		})
 
+		let promise = new Promise(resolve => {
+			entity.on("initialDraw", () => {
+				resolve();
+			})
+		})
+
 		entity.page.on(this.params.dataService, items => {
 			promise.then(() => {
 				this.dom = entity.canvas.dom;
 				this.canvas = entity.canvas;
 				this.collectItems(items, entity);
-				this.renderItems();
+				entity.trigger("refresh");
 			})
 		});
 
@@ -54,6 +55,7 @@ export class MenuItems {
 	}
 	collectItems(items) {
 		this.items = [];
+		this.visibleItems = [...this.initialVisibleItems];
 		items.forEach(item => {
 			this.items.push(new MenuItem(item, this.canvas));
 		});

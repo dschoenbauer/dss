@@ -8,7 +8,6 @@ export class KeyCommands {
 			document.addEventListener("keydown", e => {
 				if (e.code === key) {
 					page.trigger(this.params.keys[key]);
-					console.log(this.params.keys[key]);
 				}
 			});
 		}

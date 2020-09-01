@@ -21,7 +21,6 @@ export class MenuItem {
 			let ctx = this.params.context;
 			let { height, width, headline, blurb } = this.params.data;
 			let r = h < w ? { rh: h / w, rw: 1 } : { rw: w / h, rh: 1 };
-
 			let tw = w * 1.5, th = h * 1.5, tx = x - ((tw - w) / 2), ty = y - ((th - h) / 2);
 
 			if (pos === idx) {
@@ -52,7 +51,7 @@ export class MenuItem {
 		ctx.textAlign = "start";
 		ctx.textBaseline = "top";
 		ctx.fillStyle = "white";
-		this.wrapText(ctx, text, x, y, maxWidth, lineHeight);
+		this.wrapText(ctx, `${text}...`, x, y, maxWidth, lineHeight);
 
 	}
 

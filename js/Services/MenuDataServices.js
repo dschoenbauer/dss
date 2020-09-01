@@ -3,11 +3,10 @@ export class MenuDataService {
 		this.params = { listenEvent, publishEvent };
 	}
 
-
 	visitPage(page) {
-		page.on(this.params.listenEvent, () => {
-			let url = "http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=2018-06-10&sportId=1";
-			url = "http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=2020-08-28&sportId=1";
+		page.on(this.params.listenEvent, date => {
+			if (!date) date = new Date();
+			let url = `http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=${this.formatDate(date)}&sportId=1`;
 			fetch(url).then(r => r.json()).then(data => {
 				page.trigger(this.params.publishEvent, this.parseData(data));
 			});
@@ -26,5 +25,15 @@ export class MenuDataService {
 			}
 		});
 		return results;
+	}
+
+	formatDate(date) {
+		let mm = date.getMonth() + 1; // getMonth() is zero-based
+		let dd = date.getDate();
+
+		return [date.getFullYear(),
+		(mm > 9 ? '' : '0') + mm,
+		(dd > 9 ? '' : '0') + dd
+		].join('-');
 	}
 }

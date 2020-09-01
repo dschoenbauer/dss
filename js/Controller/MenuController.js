@@ -9,7 +9,7 @@ export class MenuController {
 	}
 	visitApp(app) {
 		const page = app.accept(new Page(this.params.name));
-		page.accept(new MenuView("menuDataObjects"));
-		page.accept(new MenuDataService("render", "menuDataObjects"));
+		page.accept(new MenuView("menuDataObjects", "getMenuServices"));
+		page.accept(new MenuDataService("getMenuServices", "menuDataObjects"));
 	}
 }
