@@ -1,4 +1,4 @@
-import { cover } from "../../Core/Cover";
+import { cover } from "../../Core/Cover.js";
 
 export class MenuItem {
 	constructor(data, { context }) {
