@@ -5,7 +5,7 @@ export class AddText {
 		config = {
 			...{
 				placement: "lr",
-				font: "20px Arial",
+				font: "16px Arial",
 				textAlign: "right",
 				textBaseline: "bottom",
 				fillStyle: "white",
