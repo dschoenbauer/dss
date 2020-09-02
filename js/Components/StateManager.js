@@ -9,7 +9,7 @@ export class StateManager {
 		let triggerCommonEvents = (offset) => {
 			this.date.setDate(this.date.getDate() + offset);
 			let now = new Date((new Date()).setHours(0, 0, 0, 0));
-			now = now.setDate(now.getDate() - 1);
+			now = new Date(now.setDate(now.getDate() - 1));
 			this.date = this.date > now ? now : this.date;
 			page.trigger(this.params.dataEventPullEvent, this.date);
 		}
