@@ -12,7 +12,10 @@ export class MenuItems {
 		entity.page.on(this.params.nextItemEvent, () => {
 			let max = Math.max(...this.visibleItems) + 1;
 			if (max > this.items.length - 1) {
-				if (this.visibleItems[this.selectedItem + 1] === null) return;
+				if (this.visibleItems[this.selectedItem + 1] === null){
+					entity.trigger("refresh");
+					return;
+				} 
 				max = null;
 			}
 			this.visibleItems.push(max);
@@ -25,7 +28,10 @@ export class MenuItems {
 				return x !== null;
 			})) - 1;
 			if (min < 0) {
-				if (this.visibleItems[this.selectedItem - 1] === null) return;
+				if (this.visibleItems[this.selectedItem - 1] === null){
+					entity.trigger("refresh");
+					return;
+				} 
 				min = null;
 			}
 			this.visibleItems.unshift(min);
@@ -39,11 +45,11 @@ export class MenuItems {
 			})
 		})
 
-		entity.page.on(this.params.dataService, ({title, results:items }) => {
+		entity.page.on(this.params.dataService, ({ title, results: items }) => {
 			promise.then(() => {
 				this.dom = entity.canvas.dom;
 				this.canvas = entity.canvas;
-				
+
 				this.collectItems(items, entity);
 				entity.page.trigger(this.params.setTitleEvent, title);
 				entity.trigger("refresh");
@@ -84,7 +90,7 @@ export class MenuItems {
 		h = cHeight * 0.25;
 		y = (cHeight / 2) - (h / 2);
 		w = (cWidth - (i * gap)) / (i - 1);
-		x = (w * position) + (gap * position) - (w/2);
+		x = (w * position) + (gap * position) - (w / 2);
 		return { h, w, x, y };
 	}
 }
